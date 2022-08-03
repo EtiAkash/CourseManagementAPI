@@ -115,7 +115,7 @@ namespace CourseManagementApi.Controllers
             {
                 return NotFound("Student not found");
             }
-            if (student.Courses == null)
+            if (!student.Courses.Any())
             {
                 return NotFound("Student is not enrolled in any courses");
             }
@@ -157,20 +157,37 @@ namespace CourseManagementApi.Controllers
             return Ok("Successfully enrolled");
         }
         [HttpGet]
-        [Authorize(Roles ="Student")]
+        [Authorize(Roles = "Student")]
         [Route("student{id}/view_grades")]
-        public async Task<ActionResult<IEnumerable<GradeDTO>>>ViewGrades([FromRoute]int id)
+        public async Task<ActionResult<IEnumerable<GradeDTO>>> ViewGrades([FromRoute] int id)
         {
-            var student =await  _courseRepository.GetStudentGrades(id);
+            var student = await _courseRepository.GetStudentGrades(id);
             var grades = _mapper.Map<List<GradeDTO>>(student.Grades);
-            foreach(var grade in grades)
+            foreach (var grade in grades)
             {
                 var course = await _courseRepository.GetCourse(grade.CourseId);
                 grade.CourseName = course.Name;
             }
             return Ok(grades);
         }
-            
+
+        [HttpGet]
+        [Route("getallstudents")]
+        public async Task<ActionResult<IEnumerable<StudentDetailsDTO>>> GetAllStudents()
+        {
+            var students = await _courseRepository.GetAllStudents();
+            var records = _mapper.Map<List<StudentDetailsDTO>>(students);
+            return Ok(records);
+        }
+
+        [HttpGet]
+        [Route("getallteachers")]
+        public async Task<ActionResult<IEnumerable<TeacherDTO>>> GetAllTeachers()
+        {
+            var teachers = await _courseRepository.GetAllTeachers();
+            var records = _mapper.Map<List<TeacherDTO>>(teachers);
+            return Ok(records);
+        }
 
         private async Task<bool> CourseExists(int id)
         {

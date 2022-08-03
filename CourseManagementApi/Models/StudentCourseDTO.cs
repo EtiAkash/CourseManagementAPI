@@ -1,9 +1,8 @@
 ﻿namespace CourseManagementApi.Models
 {
-    public class StudentCourseDTO
+    public class StudentCourseDTO : StudentDetailsDTO
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+
         public string TeacherName { get; set; }
     }
 }
