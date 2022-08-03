@@ -4,6 +4,7 @@ using CourseManagementApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CourseManagementApi.Migrations
 {
     [DbContext(typeof(CourseManagingDbContext))]
-    partial class CourseManagingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220804074820_AddedRequiredTag")]
+    partial class AddedRequiredTag
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -217,22 +219,22 @@ namespace CourseManagementApi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5ef6b1b3-a71f-4261-8beb-6d806e61fd7d",
-                            ConcurrencyStamp = "99e18a43-f7dd-4ee0-9bcc-33a5e49b0868",
+                            Id = "b7f7f040-85cb-46c5-9a4c-e5a1ec140c3a",
+                            ConcurrencyStamp = "b1516657-a195-4b22-815a-c3514b7adad9",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "45554017-e3ae-4ce0-b527-08c20e42f833",
-                            ConcurrencyStamp = "24dada36-4def-4318-8ad4-a67493072a86",
+                            Id = "67a258f9-c0fc-46a8-9eda-696e676208ac",
+                            ConcurrencyStamp = "4cb9d703-26f3-47f0-b480-b56437da215d",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         },
                         new
                         {
-                            Id = "b087bb18-fae5-4017-b27e-874ac9ebf3ca",
-                            ConcurrencyStamp = "3688c7c9-aca6-4787-bc7c-2e760e9f3dd2",
+                            Id = "e11dd939-dc03-4e57-a0b4-fa6b8b0c2861",
+                            ConcurrencyStamp = "c83b82cb-e717-4206-8c01-6d3602e0c92e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

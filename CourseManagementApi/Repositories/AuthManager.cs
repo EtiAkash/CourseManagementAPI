@@ -21,7 +21,7 @@ namespace CourseManagementApi.Repositories
         private readonly IConfiguration _configuration;
         private readonly CourseManagingDbContext _context;
 
-        public AuthManager(IMapper mapper,UserManager<ApiUser> userManager,IConfiguration configuration,CourseManagingDbContext context)
+        public AuthManager(IMapper mapper, UserManager<ApiUser> userManager, IConfiguration configuration, CourseManagingDbContext context)
         {
             this._mapper = mapper;
             this._userManager = userManager;
@@ -29,14 +29,14 @@ namespace CourseManagementApi.Repositories
             this._context = context;
         }
 
-        public  async Task<AuthResponseDTO> Login(LoginUserDTO userDTO)
+        public async Task<AuthResponseDTO> Login(LoginUserDTO userDTO)
         {
-            bool isValidUser = false;         
-            
-            var user = await _userManager.FindByEmailAsync(userDTO.Email);                
-            isValidUser = await _userManager.CheckPasswordAsync(user, userDTO.Password);       
-           
-            if (user == null || isValidUser==false)
+            bool isValidUser = false;
+
+            var user = await _userManager.FindByEmailAsync(userDTO.Email);
+            isValidUser = await _userManager.CheckPasswordAsync(user, userDTO.Password);
+
+            if (user == null || isValidUser == false)
             {
                 return null;
             }
@@ -53,10 +53,10 @@ namespace CourseManagementApi.Repositories
             var user = _mapper.Map<ApiUser>(userDTO);
             user.UserName = userDTO.Email;
 
-            var result = await _userManager.CreateAsync(user,userDTO.Password);
-            if(result.Succeeded)
+            var result = await _userManager.CreateAsync(user, userDTO.Password);
+            if (result.Succeeded)
             {
-                if (userDTO.Role == "Student")
+                if (userDTO.Role.ToLower() == "student")
                 {
                     await _userManager.AddToRoleAsync(user, "Student");
                     String Name = user.FirstName + " " + user.LastName;
@@ -64,11 +64,11 @@ namespace CourseManagementApi.Repositories
                     {
                         Name = Name
                     };
-                    
+
                     await _context.Students.AddAsync(_mapper.Map<Student>(student));
                     await _context.SaveChangesAsync();
                 }
-                else if(userDTO.Role=="Teacher")
+                else if (userDTO.Role.ToLower() == "teacher")
                 {
                     await _userManager.AddToRoleAsync(user, "Teacher");
                     String Name = user.FirstName + " " + user.LastName;
@@ -79,12 +79,12 @@ namespace CourseManagementApi.Repositories
 
                     await _context.Teachers.AddAsync(_mapper.Map<Teacher>(teacher));
                     await _context.SaveChangesAsync();
-                }              
+                }
             }
-            return result.Errors;           
+            return result.Errors;
         }
 
-        private async Task<string>GenerateToken(ApiUser apiUser)
+        private async Task<string> GenerateToken(ApiUser apiUser)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -106,8 +106,8 @@ namespace CourseManagementApi.Repositories
                 issuer: _configuration["JwtSettings:Issuer"],
                 audience: _configuration["JwtSettings:Audience"],
                 claims: claims,
-                expires:DateTime.Now.AddHours(Convert.ToInt32(_configuration["JwtSettings:DurationInHours"])),
-                signingCredentials:credentials
+                expires: DateTime.Now.AddHours(Convert.ToInt32(_configuration["JwtSettings:DurationInHours"])),
+                signingCredentials: credentials
                 );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
