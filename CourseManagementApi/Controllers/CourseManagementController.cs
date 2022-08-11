@@ -92,9 +92,9 @@ namespace CourseManagementApi.Controllers
         [Route("teacher/course{id}/grade")]
         public async Task<IActionResult> GradeCourse([FromRoute] int id, int studentId, int gradeValue)
         {
-             await _courseRepository.GradeAsync(id, studentId, gradeValue);
-            return Ok("Succesfully graded");           
-            
+            await _courseRepository.GradeAsync(id, studentId, gradeValue);
+            return Ok("Succesfully graded");
+
         }
 
         // DELETE: api/StudentCourses/5
@@ -167,9 +167,11 @@ namespace CourseManagementApi.Controllers
             var student = await _courseRepository.GetStudentGrades(id);
             var grades = _mapper.Map<List<GradeDTO>>(student.Grades);
             foreach (var grade in grades)
-            {                
-                    var course = await _courseRepository.GetCourse(grade.CourseId);
-                    grade.CourseName = course.Name;                
+
+            {
+                var course = await _courseRepository.GetCourse(grade.CourseId);
+                grade.CourseName = course.Name;
+
             }
             return Ok(grades);
         }

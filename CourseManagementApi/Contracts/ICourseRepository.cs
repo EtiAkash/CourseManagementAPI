@@ -1,4 +1,5 @@
 ﻿using CourseManagementApi.Data;
+using CourseManagementApi.Models;
 
 namespace CourseManagementApi.Contracts
 {

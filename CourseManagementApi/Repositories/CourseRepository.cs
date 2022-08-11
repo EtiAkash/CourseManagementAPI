@@ -31,6 +31,13 @@ namespace CourseManagementApi.Repositories
             course.Students.Add(student);
             await _context.SaveChangesAsync();
         }
+        public async Task<bool> CourseExists(int id)
+        {
+            var course = await _context.Courses.FindAsync(id);
+            return course != null;
+        }
+
+
         public async Task<Teacher> GetTeacher(int id)
         {
             return await _context.Teachers.Include(q => q.Courses)
@@ -45,7 +52,7 @@ namespace CourseManagementApi.Repositories
         }
         public async Task<Student> GetStudentGrades(int id)
         {
-            return await _context.Students.Include(q => q.Grades )
+            return await _context.Students.Include(q => q.Grades)
                                           .FirstOrDefaultAsync(p => p.Id == id);
         }
 
@@ -60,7 +67,7 @@ namespace CourseManagementApi.Repositories
         {
 
             var grade = await _context.Grades.FirstOrDefaultAsync(p => p.CourseId == id && p.StudentId == studentId);
-                    
+
             grade.GradeValue = gradeValue;
             await _context.SaveChangesAsync();
         }
