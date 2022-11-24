@@ -1,2 +1,2 @@
 # CourseManagementAPI
-.NetCore6 CourseManagementApi buld as practice
+.NetCore6 CourseManagementApi build as a personal project
