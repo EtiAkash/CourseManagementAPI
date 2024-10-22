@@ -28,9 +28,13 @@ namespace CourseManagementApi.Controllers
         //HomePage when not logged in
         [HttpGet]
         [Route("Home")]
-        public async Task<ActionResult<IEnumerable<CourseDTO>>> GetAllCourses()
+        public ActionResult<IEnumerable<CourseDTO>> GetAllCourses()
         {
-            var courses = await _courseRepository.GetAllAsync();
+            var courses = new List<Course>();
+            for(int i = 0; i < 5; i++)
+            {
+                courses.Add(new Course(i+1, $"course {i+1}"));
+            }
             var records = _mapper.Map<List<CourseDTO>>(courses);
             return Ok(records);
         }

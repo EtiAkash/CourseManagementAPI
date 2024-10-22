@@ -12,5 +12,15 @@ namespace CourseManagementApi.Data
         [ForeignKey(nameof(TeacherId))]
         public  int TeacherId {get;set;}
         public Teacher Teacher { get; set; }
+        public Course(int id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
+
+        public Course()
+        {
+
+        }
     }
 }
